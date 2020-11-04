@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=24812481
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+  db_writer6:
+    build:
+      context: .
+      dockerfile: WriterDockerfile
+    volumes:
+      - ./logs:/logs
+      - ./data:/data
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+
+  # web:
+  #   build: 
+  #     dockerfile: ApiDockerfile
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - .:/code
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
+
