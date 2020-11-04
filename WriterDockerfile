@@ -3,5 +3,4 @@ COPY ./writer.py /app/writer.py
 RUN apt-get update
 RUN apt-get install -y mysql-client python3-pip
 RUN pip3 install mysql-connector-python tabulate
-#CMD ["bash", "pip search mysql-connector | grep --color mysql-connector-python > /logs/log"]
 CMD ["/usr/bin/python3", "/app/writer.py"]

@@ -1,4 +1,5 @@
 import mysql.connector
+import os
 from tabulate import tabulate
 import csv
 
