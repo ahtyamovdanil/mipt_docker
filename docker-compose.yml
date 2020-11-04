@@ -5,7 +5,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
-      - ./db_data:/var/lib/mysql
+      - ./db/db_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=24812481
     healthcheck:
@@ -13,23 +13,19 @@ services:
             timeout: 20s
             retries: 10
   db_writer:
-    build:
-      context: .
-      dockerfile: WriterDockerfile
+    build: ./db_writer
     volumes:
-      - ./logs:/logs
+      - ./db_writer/logs:/logs
       - ./data:/data
     depends_on:
       db:
         condition: service_healthy
   web:
-    build:
-      context: .
-      dockerfile: WebDockerfile
+    build: ./web
     ports:
       - 32755:5000
     volumes:
-      - ./logs:/logs
+      - ./web/logs:/logs
     # depends_on:
     #   db:
     #     condition: service_healthy
